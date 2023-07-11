@@ -31,17 +31,21 @@ function onImgClick(event) {
         return;
     }
 
-    window.addEventListener('keyup', onEscKeyPress);
-
     const currentImg = basicLightbox.create(`
     <img src="${event.target.dataset.source}" width="800" height="600">
-`)
+`, {
+        onShow: (currentImg) => { 
+            window.addEventListener('keyup', onEscKeyPress);
+        },
+        onClose: (currentImg) => {
+            window.removeEventListener('keyup', onEscKeyPress);
+        }
+})
     currentImg.show()
 
     function onEscKeyPress(event) {
         if (event.code === 'Escape') {
             currentImg.close();
-            window.removeEventListener('keyup', onEscKeyPress);
     }
     }
 }
